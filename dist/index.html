@@ -1,15 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="copEncounters">
 <head lang="en">
-    <title> Cop Watch </title>
+    <title> Cop Encounter </title>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+    <!-- AngularJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.min.js"></script>
+     <!-- Firebase -->
+    <script src="https://cdn.firebase.com/js/client/2.2.2/firebase.js"></script>
+    <!-- AngularFire -->
+    <script src="https://cdn.firebase.com/libs/angularfire/1.0.0/angularfire.min.js"></script>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://f.vimeocdn.com/p/2.6.8/css/player.css">
 </head>
-<body class='home'>
-    <div class="page-wrapper">
+<body class='home' ng-controller="Home.controller">
+    <!-- HOMPAGE VID -->
+<div class="container">
+<div id="video_container">
+    <div id="text">
+      <div id="actions">
+        <div id="playbutton">
+          <div class="rectangle"></div>
+          <div class="triangle"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div id="cover_all"></div>
+    <div id="main-image"></div>
+    <div id="wistia_4df0jxal0p" class="wistia_embed backgroundVideo" style="width:960px;height:540px;"></div>
+    <div id="wistia_e7w8y4xxxu" class="wistia_embed overlayVideo" style="width:1920px;height:1080px;"></div>
+    <div id="ex"><img src="assets/ex.svg" width="23" height="23" /></div>
+  </div>
+
+    <!-- <div class="page-wrapper">
         <div class="headerType-video item-detail-header item-detail-header-video item-detail-header-video-wide"> 
         <iframe class="media-overlay-media-asset" src="https://player.vimeo.com/video/129520701" width="960" height="540" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
     <!--<img src="/images/cop_watch_header.jpg" alt="Cop Watch">
@@ -18,26 +43,13 @@
     <h4> MAKING POLICE ACCOUNTABLE FOR THIER ACTIONS </h4> -->
         </div>
     </div>
-   <div ui-view></div>
-    <canvas id="myChart" class="slideUp" width="600" height="200" ></canvas>
+   
+    <canvas id="myChart" class="slideUp" width="1200" height="400" ></canvas>
     <div id="legendDiv"></div>
 
 
 <!--- paralax -->
 <section class="module parallax parallax-1">
-  <div class="container">
-    <h1>JUSTICE</h1>
-  </div>
-</section>
-
-<section class="module content">
-  <div class="container">
-    <h2>NO RECORDS</h2>
-    <p>The US government has no comprehensive record of the number of people killed by law enforcement.</p>
-  </div>
-</section>
-
-<section class="module parallax parallax-2">
   <div class="container">
     <h1>ACTION</h1>
   </div>
@@ -45,21 +57,34 @@
 
 <section class="module content">
   <div class="container">
-    <h2>TRANSPARENCY</h2>
-    <p>Americans should have the ability to track</p>
+    <h2>CALL TO ACTION</h2>
+    <p>Submit your cop encounter and document the expierence you had with the badge number of the police officer you wish to comment on.</p>
+  </div>
+</section>
+
+<section class="module parallax parallax-2">
+  <div class="container">
+    <h1>RECORD</h1>
+  </div>
+</section>
+
+<section class="module content">
+  <div class="container">
+    <h2>HELP TRACK THE POLICE BEHAVIOR</h2>
+    <p>Where the behavior of the police officer was positive or negative, Americans should have the ability to keep track of the people serving them</p>
   </div>
 </section>
 
 <section class="module parallax parallax-3">
   <div class="container">
-    <h1>REPORT</h1>
+    <h1>RECORDS</h1>
   </div>
 </section>
 
 <section class="module content">
   <div class="container">
     <h2>PUBLIC INFORMATION</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+    <p>The information and details of the encounter recorded will kept public </p>
   </div>
 </section>
 
@@ -71,51 +96,75 @@
 
 <section class="module content">
   <div class="container">
-    <h2>REFORM</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+    <h2>MATCH</h2>
+    <p>The collected data will be matched with any other submissions made using the same name or badge number</p>
   </div>
 </section>
 
 <section class="module parallax parallax-5">
   <div class="container">
-    <h1>SUBMIT</h1>
+    <h1>PURPOSE</h1>
   </div>
 </section>
 
 <section class="module content">
   <div class="container">
     <h2>ACCOUNTABILITY</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-    <form>
+    <p>Whether its keeping cops accountable for thier unproper actions or praising them for a positive encounter.</p>
+    <form ng-submit="addMessage()">
       <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+        <label for="exampleInputEmail1">Police Badge Number</label>
+        <input class="form-control" ng-model="badgeNumber" placeholder="badge number">
       </div>
       <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        <label for="exampleInputEmail2">Date</label>
+        <input class="form-control" ng-model="date" placeholder="Date of encounter">
       </div>
       <div class="form-group">
-        <label for="exampleInputFile">File input</label>
-        <input type="file" id="exampleInputFile">
-        <p class="help-block">Example block-level help text here.</p>
+        <label for="exampleInputEmail3">Comments</label>
+        <textarea class="form-control" ng-model="message" placeholder="Details of encounter" rows="10"></textarea>
       </div>
-      <div class="checkbox">
+   
+      <!-- <div class="checkbox">
         <label>
           <input type="checkbox"> input
         </label>
-      </div>
+      </div> -->
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
-  </div>
-</section>
+    <hr>
+     <!--- snapshot return -->
+
+    <h2>Collected Data on Badge</h2>
+    <div ng-repeat="data in data">
+      <h3>{{ data.date }}</h3>
+      <p>{{ data.comment }}</p>
+    </div>
+  
+
+   <!-- <div class="row">
+      <div class="col-md-4" ng-repeat="data in data">
+        <h2>{{ data.badge_number }}</h2>
+        <p>{{ data.date }}</p>
+        <p>{{ data.comment }}</p>
+      </div>
+      <div class="col-md-4" ng-repeat="post in posts">
+        <h2>{{ post.badge_number }}</h2>
+        <p>{{ post.date }}</p>
+        <p>{{ post.comment }}</p>
+      </div>
+    </div>
+</section> -->
 
 
 
 <!-- paralax -->
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <script charset='ISO-8859-1' src='https://fast.wistia.com/assets/external/E-v1.js'></script>
+    <script charset='ISO-8859-1' src='https://fast.wistia.com/labs/crop-fill/plugin.js'></script>
     <script src="/js/app.js"></script>
+    <script src="js/controllers.js"></script>
 
 </body>
 </html>
