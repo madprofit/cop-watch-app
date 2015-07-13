@@ -4,32 +4,85 @@ var copEncounters = angular.module('copEncounters', ['firebase']);
 
 copEncounters.controller('Home.controller', ['$scope', '$firebaseArray', function($scope, $firebaseArray) {
   var ref = new Firebase('https://cop-encounters.firebaseio.com');
+  var filteredBadge = [];
+
+  $scope.badgeNumber = '';
+  $scope.date;
+  $scope.message;
+
+  $scope.entries = [];
+
   
+
 
   $scope.data = $firebaseArray(ref);
 
   $scope.addMessage = function() {
-   $scope.data.$add({
-     badge_number: $scope.badgeNumber,
-     date: $scope.date,
-     comment: $scope.message
-  });
+    $scope.entries = [];
+    $scope.data.$add({
+      badge_number: $scope.badgeNumber,
+      date: $scope.date,
+      comment: $scope.message
+    });
 
-ref.orderByChild("badge_number").equalTo($scope.badgeNumber).on("child_added", function(snapshot) {
-  var filteredBadge = [];
-  console.log(snapshot.val());
-  $scope.data = filteredBadge;
-  filteredbadge.push({value});
-  console.log(filteredBadge);
-  
+    ref.orderByChild("badge_number").equalTo($scope.badgeNumber).on("child_added", function(snapshot) {
+      // empty the entries array
+      // push snapshot to the array
+      $scope.entries.push(snapshot.val());
+      console.log(snapshot.val());
+      console.log("test");
 
-});
 
-  $scope.badgeNumber = '';
-  $scope.date = '';
-  $scope.message = '';
+      //$scope.filteredData = filteredBadge;
+      //$filteredbadge.push({child});
+      //console.log(filteredBadge);
 
-};
+      
+      // if badge number does not have any matching badge numbers, return "There was no other matching post to that badge number"  
+      if ($scope.entries.length == 1) {
+        $scope.confirmation = "There was no other matching post to that badge number";
+      }
+    });
+  };
+
+
+/// when new badge number matches other child, filter the data
+/// push data to data
+/// find when badge number is true ?
+
+/// var filteredBadge = [];
+///    var newBadge = filteredBadge;
+///    var matchBadge = newBadge.search($scope.data);
+///    
+///    if(matchBadge != -1)
+///      document.write("There was a matching badge number post to " + matchBadge); 
+///    else
+///      document.write("There was no matching post to that badge number");
+
+///////////////////
+
+///  var results = [];
+///  var searchBadge = "badge_number";
+///  var child_added = "badgeNumber";
+///  for (var i=0 ; i < obj.list.length ; i++)
+///  {
+///     if (obj.list[i][searchBadge] == child_added) {
+///         results.push(obj.list[i]);
+///     }
+///  }
+///////////////////
+
+/// function search(data, badge_number) {
+///    var results;
+
+///   results = source.filter(function(entry) {
+///        return entry.badge_number().indexOf(badge_number) !== -1;
+///    });
+///    return results;
+/// }
+
+/////////////
+
 }]);
 
 
