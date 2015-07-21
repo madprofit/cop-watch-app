@@ -241,18 +241,18 @@ var data = {
 
 
 
-var ctx = $("#myChart").get(0).getContext("2d");
-var myLineChart = new Chart(document.getElementById("myChart").getContext("2d")).Line(data);
-    document.getElementById("legendDiv").innerHTML = myLineChart.generateLegend();
+/// var ctx = $("#myChart").get(0).getContext("2d");
+/// var myLineChart = new Chart(document.getElementById("myChart").getContext("2d")).Line(data);
+///    document.getElementById("legendDiv").innerHTML = myLineChart.generateLegend();
     
 
-$('#myChart').hide();
+/// $('#myChart').hide();
 
-$(window).scroll(function() {
-    var scroll = $(this).scrollTop();
-    if (scroll > 200) {
-        console.log("scrolled more than 200 pixels");
-        $('#myChart').show();
-    }
-})
+/// $(window).scroll(function() {
+///    var scroll = $(this).scrollTop();
+///    if (scroll > 200) {
+///        console.log("scrolled more than 200 pixels");
+///        $('#myChart').show();
+///    }
+/// })
 },{}]},{},[1]);
